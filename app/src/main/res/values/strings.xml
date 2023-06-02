@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">BoundingBoxesDetector</string>
+    <string name="detector">Детектор</string>
+    <string name="text">Загрузите или сделайте фотографию</string>
+    <string name="failed_operation">Не удалось обработать фотографию</string>
+</resources>
