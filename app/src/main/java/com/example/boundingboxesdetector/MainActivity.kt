@@ -88,6 +88,9 @@ class MainActivity : AppCompatActivity() {
         binding.undoButton.setOnClickListener {
             visibleButtonsGalleryAndCamera.postValue(true)
         }
+        binding.saveButton.setOnClickListener {
+            visibleButtonsGalleryAndCamera.postValue(true)
+        }
     }
 
     private fun checkPermissionReadStorage(): Boolean {
