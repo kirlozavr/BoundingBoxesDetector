@@ -11,15 +11,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/text"
-        android:textSize="18dp"
         android:textColor="@color/black"
-        app:layout_constraintBottom_toBottomOf="@+id/photoView"
+        android:textSize="18dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/photoView"
+        android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/layoutBottom"
@@ -48,14 +48,14 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageButton
-                android:id="@+id/UndoButton"
+                android:id="@+id/undoButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="12dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginBottom="36dp"
                 android:background="@drawable/circle_shape"
-                app:srcCompat="@drawable/baseline_undo_48" />
+                android:src="@drawable/baseline_undo_48" />
 
             <ImageButton
                 android:id="@+id/saveButton"
@@ -65,7 +65,7 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginBottom="36dp"
                 android:background="@drawable/circle_shape"
-                app:srcCompat="@drawable/baseline_save_48" />
+                android:src="@drawable/baseline_save_48" />
         </LinearLayout>
 
         <LinearLayout
@@ -86,7 +86,7 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginBottom="36dp"
                 android:background="@drawable/circle_shape"
-                app:srcCompat="@drawable/baseline_image_48" />
+                android:src="@drawable/baseline_image_48" />
 
             <ImageButton
                 android:id="@+id/cameraButton"
@@ -96,9 +96,9 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginBottom="36dp"
                 android:background="@drawable/circle_shape"
-                app:srcCompat="@drawable/baseline_photo_camera_48" />
+                android:src="@drawable/baseline_photo_camera_48" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
+
