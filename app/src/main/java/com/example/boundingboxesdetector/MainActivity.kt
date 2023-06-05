@@ -69,27 +69,43 @@ class MainActivity : AppCompatActivity() {
     private fun onClick() {
         binding.galleryButton.setOnClickListener {
             if (checkPermissionReadStorage()) {
-                viewModel.showGallery()
-                viewModel.getBitmap().observe(this) {
-                    visibleButtonsGalleryAndCamera.postValue(false)
-                    binding.imageView.setImageBitmap(it)
-                }
+                clickShowGallery()
             }
         }
         binding.cameraButton.setOnClickListener {
             if (checkPermissionCamera()) {
-                viewModel.showCamera()
-                viewModel.getBitmap().observe(this) {
-                    visibleButtonsGalleryAndCamera.postValue(false)
-                    binding.imageView.setImageBitmap(it)
-                }
+                clickShowCamera()
             }
         }
         binding.undoButton.setOnClickListener {
-            visibleButtonsGalleryAndCamera.postValue(true)
+            clickUndo()
         }
         binding.saveButton.setOnClickListener {
-            visibleButtonsGalleryAndCamera.postValue(true)
+            clickSave()
+        }
+    }
+
+    private fun clickSave() {
+        visibleButtonsGalleryAndCamera.postValue(true)
+    }
+
+    private fun clickUndo() {
+        visibleButtonsGalleryAndCamera.postValue(true)
+    }
+
+    private fun clickShowCamera() {
+        viewModel.showCamera()
+        viewModel.getBitmap().observe(this@MainActivity) {
+            visibleButtonsGalleryAndCamera.postValue(false)
+            binding.imageView.setImageBitmap(it)
+        }
+    }
+
+    private fun clickShowGallery() {
+        viewModel.showGallery()
+        viewModel.getBitmap().observe(this@MainActivity) {
+            visibleButtonsGalleryAndCamera.postValue(false)
+            binding.imageView.setImageBitmap(it)
         }
     }
 
