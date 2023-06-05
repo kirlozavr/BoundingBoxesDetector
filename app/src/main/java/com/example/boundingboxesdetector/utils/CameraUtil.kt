@@ -8,9 +8,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import com.example.boundingboxesdetector.BuildConfig
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.io.File
 
-class CameraUtil constructor(private val activity: AppCompatActivity){
+class CameraUtil constructor(private val activity: AppCompatActivity) {
 
     private lateinit var compress: CompressImage
 
@@ -18,12 +21,14 @@ class CameraUtil constructor(private val activity: AppCompatActivity){
     private val activityResultLauncher = activity.registerForActivityResult(
         ActivityResultContracts.StartActivityForResult(),
         ActivityResultCallback {
-            if (it.resultCode == AppCompatActivity.RESULT_OK){
-                compress.compress(activity.applicationContext, uri)
+            if (it.resultCode == AppCompatActivity.RESULT_OK) {
+                CoroutineScope(Dispatchers.IO).launch {
+                    compress.compress(activity.applicationContext, uri)
+                }
             }
         })
 
-    fun launch(compress: CompressImage){
+    fun launch(compress: CompressImage) {
         this.compress = compress
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         uri = FileProvider.getUriForFile(
@@ -35,7 +40,7 @@ class CameraUtil constructor(private val activity: AppCompatActivity){
         activityResultLauncher.launch(intent)
     }
 
-    private fun createImageFile(): File{
+    private fun createImageFile(): File {
         val storageDir = activity.getExternalFilesDir(null)
 
         return File.createTempFile(

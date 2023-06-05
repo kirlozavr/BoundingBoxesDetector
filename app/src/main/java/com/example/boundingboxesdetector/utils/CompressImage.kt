@@ -19,7 +19,7 @@ class CompressImage @Inject constructor(){
 
     fun getBitmap(): LiveData<Bitmap> = bitmapLiveData
 
-    fun compress(context: Context, uri: Uri) {
+    suspend fun compress(context: Context, uri: Uri) {
         Glide
             .with(context)
             .asBitmap()
