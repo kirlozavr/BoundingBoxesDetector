@@ -10,6 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/** Класс для доступа к галереии и получения результата **/
 class ImageGalleryUtil @Inject constructor(
     private val context: Context,
     private val resultRegistry: ActivityResultRegistry

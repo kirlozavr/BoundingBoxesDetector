@@ -13,6 +13,7 @@ import java.io.FileInputStream
 import java.nio.ByteBuffer
 import java.nio.channels.FileChannel
 
+/** Детектор, пока что наработки **/
 class TensorFlowDetector constructor(
     private val context: Context,
     private val detectorListener: DetectorListener

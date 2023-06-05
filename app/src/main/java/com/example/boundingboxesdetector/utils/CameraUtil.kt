@@ -13,6 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
 
+/** Класс для доступа к камере и получения результата **/
 class CameraUtil constructor(private val activity: AppCompatActivity) {
 
     private lateinit var compress: CompressImage

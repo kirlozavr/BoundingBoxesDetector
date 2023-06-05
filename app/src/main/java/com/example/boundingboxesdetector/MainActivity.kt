@@ -51,6 +51,7 @@ class MainActivity : AppCompatActivity() {
         listenerLiveDataView()
     }
 
+    /** Метод управляет видимостью элементов в зависимости от нажатия кнопок **/
     private fun listenerLiveDataView() {
         visibleButtonsGalleryAndCamera.observe(this) {
             if (it) {
@@ -109,6 +110,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /** Проверка разрешения на доступ к хранилищу **/
     private fun checkPermissionReadStorage(): Boolean {
         return if (Build.VERSION.SDK_INT in 23..32) {
             if (checkSelfPermission(READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
@@ -137,6 +139,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /** Проверка разрешения на доступ к камере **/
     private fun checkPermissionCamera(): Boolean {
         return if (checkSelfPermission(CAMERA) != PackageManager.PERMISSION_GRANTED
         ) {

@@ -2,6 +2,7 @@ package com.example.boundingboxesdetector.utils
 
 import org.tensorflow.lite.task.vision.detector.Detection
 
+/** Слушатель событий детектора **/
 interface DetectorListener {
 
     fun onError(error: String)

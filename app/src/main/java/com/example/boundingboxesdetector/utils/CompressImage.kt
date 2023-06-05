@@ -11,7 +11,8 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import javax.inject.Inject
 
-class CompressImage @Inject constructor(){
+/** Класс для изменения размеров картинки до 640/480 с сохранением соотношения сторон **/
+class CompressImage @Inject constructor() {
 
     private val TARGET_WIDTH = 480
     private val TARGET_HEIGHT = 640
