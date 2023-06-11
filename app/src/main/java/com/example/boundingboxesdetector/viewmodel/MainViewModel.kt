@@ -3,20 +3,26 @@ package com.example.boundingboxesdetector.viewmodel
 import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.example.boundingboxesdetector.utils.CameraUtil
-import com.example.boundingboxesdetector.utils.CompressImage
-import com.example.boundingboxesdetector.utils.ImageGalleryUtil
+import androidx.lifecycle.viewModelScope
+import com.example.boundingboxesdetector.tfmodel.TensorFlowDetector
+import com.example.boundingboxesdetector.utils.*
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
-    private val cameraUtil: CameraUtil
+    private val cameraUtil: CameraUtil,
+    private val imageGalleryUtil: ImageGalleryUtil,
+    private val compressImage: CompressImage,
+    private val model: TensorFlowDetector
 ) : ViewModel() {
 
-    @Inject
-    lateinit var imageGalleryUtil: ImageGalleryUtil
+    private val bitmapLiveData: SingleLiveData<Bitmap> = SingleLiveData()
+    private val isSaveLiveData: SingleLiveData<Boolean> = SingleLiveData()
 
-    @Inject
-    lateinit var compressImage: CompressImage
+    override fun onCleared() {
+        super.onCleared()
+        model.close()
+    }
 
     fun showGallery() {
         imageGalleryUtil.launch(compressImage)
@@ -26,6 +32,26 @@ class MainViewModel @Inject constructor(
         cameraUtil.launch(compressImage)
     }
 
-    fun getBitmap(): LiveData<Bitmap> = compressImage.getBitmap()
+    fun saveImage(bitmap: Bitmap){
+        viewModelScope.launch {
+            val isSave = SaveImageUtil.save(bitmap)
+            isSaveLiveData.postValue(isSave)
+        }
+    }
+
+    fun overlayResults(bmp: Bitmap) {
+        viewModelScope.launch {
+            val result = model.detect(bmp)
+            val rectFs = result.map { it.boundingBox }.toMutableList()
+            val bitmap = OverlayBitmap.overlay(bmp, rectFs)
+            bitmapLiveData.postValue(bitmap)
+        }
+    }
+
+    fun getIsSaveResult(): LiveData<Boolean> = isSaveLiveData
+
+    fun getBitmapResult(): LiveData<Bitmap> = bitmapLiveData
+
+    fun getBitmapFromCompress(): LiveData<Bitmap> = compressImage.getBitmap()
 
 }
