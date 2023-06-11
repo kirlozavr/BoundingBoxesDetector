@@ -7,7 +7,7 @@ import com.example.boundingboxesdetector.di.DaggerAppComponent
 class Application : Application() {
 
     val component: AppComponent by lazy {
-        DaggerAppComponent.create()
+        DaggerAppComponent.factory().create(this)
     }
 
     override fun onCreate() {
