@@ -1,6 +1,5 @@
 package com.example.boundingboxesdetector.di
 
-import android.content.Context
 import androidx.activity.result.ActivityResultRegistry
 import com.example.boundingboxesdetector.MainActivity
 import com.example.boundingboxesdetector.utils.CameraUtil
@@ -17,7 +16,6 @@ interface MainActivityComponent {
     interface Factory{
 
         fun create(
-            @BindsInstance context: Context,
             @BindsInstance cameraUtil: CameraUtil,
             @BindsInstance resultRegistry: ActivityResultRegistry,
         ):MainActivityComponent
