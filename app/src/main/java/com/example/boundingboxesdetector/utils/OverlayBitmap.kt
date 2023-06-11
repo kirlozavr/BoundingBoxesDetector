@@ -12,8 +12,8 @@ object OverlayBitmap {
         )
 
         rectFList.stream().forEach {
-            it.top *= bitmap.height
             it.left *= bitmap.width
+            it.top *= bitmap.height
             it.right *= bitmap.width
             it.bottom *= bitmap.height
         }
@@ -21,6 +21,7 @@ object OverlayBitmap {
         val canvas = Canvas(bitmap)
         val paint = Paint()
         paint.color = Color.RED
+        paint.strokeWidth = 4F
         paint.style = Paint.Style.STROKE
 
         canvas.drawBitmap(bmp, Matrix(), null)
