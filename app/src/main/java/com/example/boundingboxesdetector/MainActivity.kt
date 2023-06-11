@@ -9,14 +9,18 @@ import com.example.boundingboxesdetector.viewmodel.MainViewModel
 import com.example.boundingboxesdetector.viewmodel.ViewModelFactory
 import javax.inject.Inject
 import android.Manifest
+import android.graphics.Bitmap
 import android.os.Build
 import android.view.View
+import androidx.core.graphics.drawable.toBitmap
 import com.example.boundingboxesdetector.utils.CameraUtil
 import com.example.boundingboxesdetector.utils.SingleLiveData
+import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity() {
 
     private val PERMISSION_CODE = 200
+    private val WRITE_EXTERNAL_STORAGE = Manifest.permission.WRITE_EXTERNAL_STORAGE
     private val READ_EXTERNAL_STORAGE = Manifest.permission.READ_EXTERNAL_STORAGE
     private val READ_MEDIA_IMAGES = Manifest.permission.READ_MEDIA_IMAGES
     private val CAMERA = Manifest.permission.CAMERA
@@ -35,7 +39,7 @@ class MainActivity : AppCompatActivity() {
     private val component by lazy {
         (application as Application).component
             .mainActivityComponentFactory()
-            .create(this, cameraUtil, activityResultRegistry)
+            .create(cameraUtil, activityResultRegistry)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,6 +53,19 @@ class MainActivity : AppCompatActivity() {
 
         onClick()
         listenerLiveDataView()
+        isSaveImage()
+    }
+
+    private fun isSaveImage(){
+        viewModel.getIsSaveResult().observe(this){
+            if (it){
+                Snackbar.make(
+                    binding.constraintLayoutMain,
+                    getString(R.string.save_image),
+                    Snackbar.LENGTH_LONG
+                ).show()
+            }
+        }
     }
 
     /** Метод управляет видимостью элементов в зависимости от нажатия кнопок **/
@@ -69,7 +86,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun onClick() {
         binding.galleryButton.setOnClickListener {
-            if (checkPermissionReadStorage()) {
+            if (checkPermissionStorage()) {
                 clickShowGallery()
             }
         }
@@ -82,12 +99,14 @@ class MainActivity : AppCompatActivity() {
             clickUndo()
         }
         binding.saveButton.setOnClickListener {
-            clickSave()
+            val bitmap = binding.imageView.drawable.toBitmap()
+            clickSave(bitmap)
         }
     }
 
-    private fun clickSave() {
+    private fun clickSave(bitmap: Bitmap) {
         visibleButtonsGalleryAndCamera.postValue(true)
+        viewModel.saveImage(bitmap)
     }
 
     private fun clickUndo() {
@@ -96,27 +115,33 @@ class MainActivity : AppCompatActivity() {
 
     private fun clickShowCamera() {
         viewModel.showCamera()
-        viewModel.getBitmap().observe(this@MainActivity) {
-            visibleButtonsGalleryAndCamera.postValue(false)
-            binding.imageView.setImageBitmap(it)
-        }
+        showResult()
     }
 
     private fun clickShowGallery() {
         viewModel.showGallery()
-        viewModel.getBitmap().observe(this@MainActivity) {
+        showResult()
+    }
+
+    private fun showResult() {
+        viewModel.getBitmapFromCompress().observe(this) {
+            viewModel.overlayResults(it)
+        }
+        viewModel.getBitmapResult().observe(this) {
             visibleButtonsGalleryAndCamera.postValue(false)
             binding.imageView.setImageBitmap(it)
         }
     }
 
     /** Проверка разрешения на доступ к хранилищу **/
-    private fun checkPermissionReadStorage(): Boolean {
+    private fun checkPermissionStorage(): Boolean {
         return if (Build.VERSION.SDK_INT in 23..32) {
-            if (checkSelfPermission(READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+            if (
+                checkSelfPermission(READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED &&
+                checkSelfPermission(WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
             ) {
                 requestPermissions(
-                    arrayOf(READ_EXTERNAL_STORAGE),
+                    arrayOf(READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE),
                     PERMISSION_CODE
                 )
                 false
