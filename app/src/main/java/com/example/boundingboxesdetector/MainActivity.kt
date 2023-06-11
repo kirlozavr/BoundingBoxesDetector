@@ -56,6 +56,7 @@ class MainActivity : AppCompatActivity() {
         isSaveImage()
     }
 
+    /** Метод слушает LiveData<Boolean> и высвечивает Snackbar если изображение сохр. **/
     private fun isSaveImage(){
         viewModel.getIsSaveResult().observe(this){
             if (it){

@@ -2,6 +2,7 @@ package com.example.boundingboxesdetector.utils
 
 import android.graphics.*
 
+/** Класс для наложения результата на исходное изображение **/
 object OverlayBitmap {
 
     suspend fun overlay(bitmap: Bitmap, rectFList: MutableList<RectF>): Bitmap {

@@ -5,6 +5,7 @@ import android.os.Environment
 import java.io.File
 import java.io.FileOutputStream
 
+/** Класс для сохранения изображения в галереи **/
 object SaveImageUtil {
 
     suspend fun save(bitmap: Bitmap): Boolean {
